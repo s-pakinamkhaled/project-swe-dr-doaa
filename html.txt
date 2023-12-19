@@ -1,0 +1,51 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendation System</title>
+</head>
+<body>
+    <form id="recommendationForm">
+        <label>Food<input type="checkbox" name="categories[]" value="1"></label>
+        <label>Movie<input type="checkbox" name="categories[]" value="2"></label>
+        <label>Travel<input type="checkbox" name="categories[]" value="3"></label>
+
+        <label>Italian<input type="checkbox" name="preferences[]" value="Italian"></label>
+        <label>Mexican<input type="checkbox" name="preferences[]" value="Mexican"></label>
+        <label>Japanese<input type="checkbox" name="preferences[]" value="Japanese"></label>
+        
+        <button type="button" onclick="getRecommendations()">Get Recommendations</button>
+    </form>
+
+    <div id="recommendationResults"></div>
+
+    <script>
+        function getRecommendations() {
+            const form = document.getElementById('recommendationForm');
+            const formData = new FormData(form);
+
+            fetch('/recommend', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('recommendationResults');
+                resultsDiv.innerHTML = '';
+
+                for (const category in data) {
+                    const categoryDiv = document.createElement('div');
+                    const preferences = data[category].preferences.join(', ');
+                    const recommendations = data[category].recommendations.join(', ');
+
+                    categoryDiv.innerHTML = <p>Preferences: ${preferences}</p><p>Recommendations: ${recommendations}</p>;
+                    resultsDiv.appendChild(categoryDiv);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
