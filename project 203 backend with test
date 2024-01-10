@@ -1,0 +1,205 @@
+import pytest
+from main import movies, clothes, traveling, food, gamming, sports, recommend_games
+
+
+def test_movies_function():
+    assert movies('fiction', 'long', 'movie') == ['maze runner']
+    assert movies('comedy', 'short', 'movie') == ['free guy']
+    assert movies('action', 'short', 'series') == []
+    assert movies('comedy', 'long', 'series') == ['friends']
+
+
+def test_clothes_function():
+    assert clothes('cold', 'event', 'red') == ['formal long sleeve dress or formal red suit jacket with matching pants']
+    assert clothes('hot', 'gym', 'pink') == ['pink sweats and tank top']
+    assert clothes('cold', 'hangout', 'blue') == ['blue jeans with black puffer jacket']
+    assert clothes('hot', 'event', 'black') == ['black dress']
+
+
+def test_traveling_function():
+    assert traveling('yes', 'touristic', 'hot') == ['spain (canary island)', 'portugal', 'paris']
+    assert traveling('no', 'fun', 'cold') == ['zambia']
+    assert traveling('yes', 'fun', 'hot') == ['austria', 'serbia']
+    assert traveling('no', 'touristic', 'cold') == ['switzerland']
+
+
+def test_food_function():
+    assert food('morning', 'no', 'sunday') == 'waffle and coffee or pancakes'
+    assert food('evening', 'yes', 'sunday') == 'steak and rice'
+    assert food('midday', 'no', 'monday') == 'shawarma and cola'
+    assert food('midday', 'yes', 'wednesday') == 'waffle'
+
+
+def test_gamming_function():
+    assert gamming('boys', 'happy') == ['playstation', 'chess']
+    assert gamming('girls', 'party') == ['dancing and singing']
+    assert gamming('boys', 'boring') == ['Unknown mood']
+
+
+def test_sports_function():
+    assert sports('child') == 'swimming'
+    assert sports('teenagers') == 'football or tennis'
+    assert sports('adult') == 'hockey or hiking'
+
+
+def test_recommend_games_function():
+    assert recommend_games('home') == 'play cards or chess'
+    assert recommend_games('beach') == 'volleyball and sandcastle building'
+    assert recommend_games('mountains') == 'Unknown location'
+
+if __name__ == "__main__":
+    pytest.main()
+def movies(mood, time, series_movie):
+    movies = [['maze runner', 'fiction', 'long', 'movie'],
+              ['divergent', 'fiction', 'short', 'movie'],
+              ['the vampire diaries', 'fiction', 'long', 'series'],
+              ['julie and the phantoms', 'fiction', 'short', 'series'],
+              ['top gun', 'action', 'short', 'movie'],
+              ['fast and furious', 'action', 'long', 'movie'],
+              ['night agent', 'action', 'short', 'series'],
+              ['breaking bad', 'action', 'long', 'series'],
+              ['never have i ever', 'comedy', 'short', 'series'],
+              ['jumanji', 'comedy', 'long', 'movie'],
+              ['friends', 'comedy', 'long', 'series'],
+              ['free guy', 'comedy', 'short', 'movie']]
+    result = [item[0] for item in movies if item[1] == mood and item[2] == time and item[3] == series_movie]
+    return result
+
+mood = input('what mood are you in: ')
+time = input('do you want to watch something short or long: ')
+series_movie = input('what do you want to watch: ')
+print(movies(mood, time, series_movie))
+
+def clothes(weather, occasion, colors):
+    femaleclothes = [['event', 'cold', 'red', 'formal long sleeve dress or formal red suit jacket with matching pants'],
+                     ['hang out', 'cold', 'red', 'puffed red jacket with black jeans'],
+                     ['event', 'hot', 'red', 'formal cocktail dress'],
+                     ['gym', 'hot', 'red', 'red joggers with white t-shirt'],
+                     ['gym', 'cold', 'red', 'red hoodie with joggers'],
+                     ['event', 'cold', 'blue', 'blue suit with a black coat'],
+                     ['hang out', 'cold', 'blue', 'blue jeans with black puffer jacket'],
+                     ['event', 'hot', 'blue', 'blue skirt with a white top'],
+                     ['gym', 'hot', 'blue', 'blue tank top with sweat shorts'],
+                     ['gym', 'cold', 'blue', 'blue hoodie and sweatpants'],
+                     ['event', 'cold', 'black', 'black coat with a dress'],
+                     ['gym', 'cold', 'black', 'black hoodie with joggers'],
+                     ['hangout', 'cold', 'black', 'black hoodie and jeans'],
+                     ['gym', 'hot', 'black', 'black sweatpants and a t-shirt'],
+                     ['event', 'hot', 'black', 'black dress'],
+                     ['event', 'cold', 'pink', 'pink suit'],
+                     ['event', 'hot', 'pink', 'pink dress or pink suit'],
+                     ['hangout', 'cold', 'pink', 'pink jacket with black pants'],
+                     ['hangout', 'hot', 'pink', 'pink shorts with a white tank top'],
+                     ['gym', 'hot', 'pink', 'pink sweats and tank top'],
+                     ['gym', 'cold', 'pink', 'pink hoodie and sweatpants']]
+    result = [item[3] for item in femaleclothes if item[0] == occasion and item[1] == weather and item[2] == colors]
+    return result
+
+weather = input('is it hot or cold: ')
+colors = input('choose red or black or blue or pink: ')
+occasion = input('hangout or event or gym: ')
+print(clothes(weather, occasion, colors))
+
+def traveling(beach, touristic_fun, weather):
+    destinations = {
+        'yes': {'touristic': {'hot': ['spain (canary island)', 'portugal', 'paris'],
+                              'fun': ['cyprus', 'maldives']},
+                'fun': {'hot': ['austria', 'serbia'],
+                        'cold': ['kazakhstan']},
+                'touristic': {'hot': ['switzerland'],
+                              'cold': ['iceland', 'italy', 'germany']}},
+        'no': {'touristic': {'hot': ['iceland', 'italy', 'germany'],
+                             'cold': ['new zealand', 'canada']},
+               'fun': {'hot': ['kazakhstan'],
+                       'cold': ['zambia']}}
+    }
+
+    return destinations[beach][touristic_fun][weather]
+
+beach = input('do you want a country with a beach y/n: ').lower()
+touristic_fun = input('a touristic or a fun country: ').lower()
+weather = input('hot or cold weather: ').lower()
+print(traveling(beach, touristic_fun, weather))
+
+def food(date, allergies, day):
+    menu = {
+        'morning': {'no': {'sunday': 'waffle and coffee or pancakes',
+                           'monday': 'omelette and orange juice',
+                           'tuesday': 'salmon with coffee',
+                           'wednesday': 'nuts and sandwich'},
+                    'yes': {'sunday': 'oats and orange juice',
+                            'monday': 'muffin and orange juice',
+                            'tuesday': 'cupcake with tea',
+                            'wednesday': 'waffle'}},
+        'midday': {'no': {'sunday': 'rice and chicken stew and coleslaw',
+                          'monday': 'shawarma and cola',
+                          'tuesday': 'fish with cola',
+                          'wednesday': 'burger'},
+                   'yes': {'sunday': 'swallow soup',
+                           'monday': 'tuna',
+                           'tuesday': 'pizza and juice',
+                           'wednesday': 'rice and steamed broccoli'}},
+        'evening': {'no': {'sunday': 'spaghetti and chicken',
+                            'monday': 'tuna salad with cola',
+                            'tuesday': 'pizza and cola',
+                            'wednesday': 'sushi'},
+                    'yes': {'sunday': 'steak and rice',
+                            'monday': 'sandwich',
+                            'tuesday': 'fruit salad',
+                            'wednesday': 'potato'}}
+    }
+
+    return menu[date][allergies][day]
+
+date = input("it is morning/ midday/ evening: ").lower()
+allergies = input("do you have allergies? y/n: ").lower()
+day = input("what day is it? ").lower()
+print(food(date, allergies, day))
+
+def gamming(gathering, mood):
+    games = {
+        'boys': {'happy': ['playstation', 'chess'],
+                 'sad': ['soccer'],
+                 'relaxing': ['super smash'],
+                 'party': ['just dance'],
+                 'fighting': ['mortal kombat'],
+                 'competitive': ['fifa']},
+        'girls': {'happy': ['chess'],
+                  'sad': ['singing'],
+                  'party': ['dancing and singing'],
+                  'boring': ['dance competition']}
+    }
+
+    return games[gathering][mood]
+
+gathering = input("is the gathering boys or girls? ").lower()
+mood = input("what is your mood? ").lower()
+print(gamming(gathering, mood))
+
+def sports(age):
+    sports_dict = {
+        'child': 'swimming',
+        'teenagers': 'football or tennis',
+        'adult': 'hockey or hiking'
+    }
+
+    return sports_dict[age]
+
+age = input("are you a child/teenager/adult? ").lower()
+print(sports(age))
+
+def recommend_games(location):
+    games_dict = {
+        'home': 'play cards or chess',
+        'outdoors': 'horseshoes and dodgeball',
+        'indoors': 'pool and tennis',
+        'beach': 'volleyball and sandcastle building',
+        'park': 'soccer'
+    }
+
+    return games_dict.get(location.lower(), 'Unknown location')
+
+location = input('where are you? ').lower()
+print(recommend_games(location))
+
+
